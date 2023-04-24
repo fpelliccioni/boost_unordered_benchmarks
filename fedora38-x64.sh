@@ -83,21 +83,26 @@ g++ ${SOURCEFILE} ${ARCHITECTURE} ${COMPILEROPTIONS} -o ${OUTPUTFILE} -I$GITHUB_
 echo "REPORT_FILE=${REPORTDIR}/${SOURCEFILE}.txt" >> $GITHUB_ENV
 
 # - name: Run benchmarks
-if [ -n "${COMMAND}" ]; then
-    echo "running benchmarks and saving to "${REPORT_FILE}
-    ${COMMAND} | tee ${REPORT_FILE}
-else
-    echo "running benchmarks and saving to "${REPORT_FILE}
-    ./${OUTPUTFILE} | tee ${REPORT_FILE}
-fi
+# if [ -n "${COMMAND}" ]; then
+#     echo "running benchmarks and saving to "${REPORT_FILE}
+#     ${COMMAND} | tee ${REPORT_FILE}
+# else
+#     echo "running benchmarks and saving to "${REPORT_FILE}
+#     ./${OUTPUTFILE} | tee ${REPORT_FILE}
+# fi
+
+echo "running benchmarks and saving to "${REPORT_FILE}
+${COMMAND} | tee ${REPORT_FILE}
+
 
 # - name: Push benchmark results to repo
-        # git config --global user.name 'joaquintides'
-        # git config --global user.email 'joaquintides@users.noreply.github.com'
-        # git add ${REPORT_FILE}
-        # git stash -- ${REPORT_FILE}
-        # git pull
-        # git stash pop
-        # git add ${REPORT_FILE}
-        # git commit -m "updated benchmark results"
-        # git push
+# git config --global user.name 'joaquintides'
+# git config --global user.email 'joaquintides@users.noreply.github.com'
+# git add ${REPORT_FILE}
+# git stash -- ${REPORT_FILE}
+# git pull
+# git stash pop
+# git add ${REPORT_FILE}
+# git commit -m "updated benchmark results"
+# git push
+
