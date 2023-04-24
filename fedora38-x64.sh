@@ -82,6 +82,7 @@ g++ ${SOURCEFILE} ${ARCHITECTURE} ${COMPILEROPTIONS} -o ${OUTPUTFILE} -I$GITHUB_
 
 # - name: Set reportfile name
 # echo "REPORT_FILE=${REPORTDIR}/${SOURCEFILE}.txt" >> $GITHUB_ENV
+export REPORT_FILE="${REPORTDIR}/${SOURCEFILE}.txt"
 
 # - name: Run benchmarks
 # if [ -n "${COMMAND}" ]; then
