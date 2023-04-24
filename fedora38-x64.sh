@@ -37,43 +37,43 @@ export COMMAND="./benchmark"
 
 
 # - name: Download large data files
-cd $GITHUB_WORKSPACE
-for URL in "${DATAFILES}"; do
-    FILENAME="${URL##*/}"
-    curl $URL --output $FILENAME
-    unzip $FILENAME
-    rm $FILENAME
-done
+# cd $GITHUB_WORKSPACE
+# for URL in "${DATAFILES}"; do
+#     FILENAME="${URL##*/}"
+#     curl $URL --output $FILENAME
+#     unzip $FILENAME
+#     rm $FILENAME
+# done
 
-# - name: Install Boost
-cd $GITHUB_WORKSPACE
-git clone https://github.com/boostorg/boost.git boost-root
-cd boost-root
-git checkout develop
-git submodule update --init
-./bootstrap.sh
-./b2 -d0 headers
+# # - name: Install Boost
+# cd $GITHUB_WORKSPACE
+# git clone https://github.com/boostorg/boost.git boost-root
+# cd boost-root
+# git checkout develop
+# git submodule update --init
+# ./bootstrap.sh
+# ./b2 -d0 headers
 
-# - name: Install Boost.Unordered branch feature/cfoa
-cd $GITHUB_WORKSPACE
-git clone -b feature/cfoa https://github.com/boostorg/unordered.git boost_unordered-root
+# # - name: Install Boost.Unordered branch feature/cfoa
+# cd $GITHUB_WORKSPACE
+# git clone -b feature/cfoa https://github.com/boostorg/unordered.git boost_unordered-root
 
-# - name: Install oneTBB
-cd $GITHUB_WORKSPACE
-git clone https://github.com/Microsoft/vcpkg.git
-cp x86-linux.cmake vcpkg/triplets
-cd vcpkg
-./bootstrap-vcpkg.sh -disableMetrics
-./vcpkg integrate install
-./vcpkg install tbb:${VCPKGTRIPLET}
+# # - name: Install oneTBB
+# cd $GITHUB_WORKSPACE
+# git clone https://github.com/Microsoft/vcpkg.git
+# cp x86-linux.cmake vcpkg/triplets
+# cd vcpkg
+# ./bootstrap-vcpkg.sh -disableMetrics
+# ./vcpkg integrate install
+# ./vcpkg install tbb:${VCPKGTRIPLET}
 
-# - name: Install libcuckoo
-cd $GITHUB_WORKSPACE
-git clone https://github.com/efficient/libcuckoo.git libcuckoo-root
+# # - name: Install libcuckoo
+# cd $GITHUB_WORKSPACE
+# git clone https://github.com/efficient/libcuckoo.git libcuckoo-root
 
-# - name: Install gtl
-cd $GITHUB_WORKSPACE
-git clone https://github.com/greg7mdp/gtl.git gtl-root
+# # - name: Install gtl
+# cd $GITHUB_WORKSPACE
+# git clone https://github.com/greg7mdp/gtl.git gtl-root
 
 # - name: Compile
 cd $GITHUB_WORKSPACE
@@ -81,7 +81,7 @@ g++ --version
 g++ ${SOURCEFILE} ${ARCHITECTURE} ${COMPILEROPTIONS} -o ${OUTPUTFILE} -I$GITHUB_WORKSPACE/boost_unordered-root/include -I$GITHUB_WORKSPACE/boost-root -I$GITHUB_WORKSPACE/vcpkg/installed/${VCPKGTRIPLET}/include -I$GITHUB_WORKSPACE/libcuckoo-root/libcuckoo -I$GITHUB_WORKSPACE/gtl-root/include -L$GITHUB_WORKSPACE/vcpkg/installed/${VCPKGTRIPLET}/lib -pthread -ltbb -ltbbmalloc
 
 # - name: Set reportfile name
-echo "REPORT_FILE=${REPORTDIR}/${SOURCEFILE}.txt" >> $GITHUB_ENV
+# echo "REPORT_FILE=${REPORTDIR}/${SOURCEFILE}.txt" >> $GITHUB_ENV
 
 # - name: Run benchmarks
 # if [ -n "${COMMAND}" ]; then
