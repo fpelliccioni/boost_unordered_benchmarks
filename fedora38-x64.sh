@@ -21,6 +21,8 @@ export REPORTDIR=gcc-x64
 # export COMMAND="sudo cset shield --exec -- nice -n -20 sudo -u gha ./benchmark"
 export COMMAND="./benchmark"
 
+export NUM_THREADS=128
+
 # - uses: actions/checkout@v3
 # git clone https://github.com/fpelliccioni/boost_unordered_benchmarks.git
 # cd boost_unordered_benchmarks
@@ -78,7 +80,7 @@ export COMMAND="./benchmark"
 # - name: Compile
 cd $GITHUB_WORKSPACE
 g++ --version
-g++ ${SOURCEFILE} ${ARCHITECTURE} ${COMPILEROPTIONS} -o ${OUTPUTFILE} -I$GITHUB_WORKSPACE/boost_unordered-root/include -I$GITHUB_WORKSPACE/boost-root -I$GITHUB_WORKSPACE/vcpkg/installed/${VCPKGTRIPLET}/include -I$GITHUB_WORKSPACE/libcuckoo-root/libcuckoo -I$GITHUB_WORKSPACE/gtl-root/include -L$GITHUB_WORKSPACE/vcpkg/installed/${VCPKGTRIPLET}/lib -pthread -ltbb -ltbbmalloc
+g++ ${SOURCEFILE} ${ARCHITECTURE} ${COMPILEROPTIONS} -o ${OUTPUTFILE} -DNUM_THREADS=${NUM_THREADS} -I$GITHUB_WORKSPACE/boost_unordered-root/include -I$GITHUB_WORKSPACE/boost-root -I$GITHUB_WORKSPACE/vcpkg/installed/${VCPKGTRIPLET}/include -I$GITHUB_WORKSPACE/libcuckoo-root/libcuckoo -I$GITHUB_WORKSPACE/gtl-root/include -L$GITHUB_WORKSPACE/vcpkg/installed/${VCPKGTRIPLET}/lib -pthread -ltbb -ltbbmalloc
 
 # - name: Set reportfile name
 # echo "REPORT_FILE=${REPORTDIR}/${SOURCEFILE}.txt" >> $GITHUB_ENV
