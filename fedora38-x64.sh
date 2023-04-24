@@ -4,6 +4,7 @@ set -x
 set -e
 
 export GITHUB_WORKSPACE=/home/fernando/boost/boost_unordered_benchmarks
+# export GITHUB_WORKSPACE=/home/fernando/dev/boost/boost_unordered_benchmarks
 
 # name: gcc-x64
 # compiler: g++-11
@@ -37,12 +38,12 @@ export COMMAND="./benchmark"
 
 # - name: Download large data files
 cd $GITHUB_WORKSPACE
-for URL in ${DATAFILES}; do
-FILENAME="${URL##*/}"
-curl $URL --output $FILENAME
-unzip $FILENAME
-rm $FILENAME
-# done
+for URL in "${DATAFILES}"; do
+    FILENAME="${URL##*/}"
+    curl $URL --output $FILENAME
+    unzip $FILENAME
+    rm $FILENAME
+done
 
 # - name: Install Boost
 cd $GITHUB_WORKSPACE
@@ -91,7 +92,7 @@ echo "REPORT_FILE=${REPORTDIR}/${SOURCEFILE}.txt" >> $GITHUB_ENV
 #     ./${OUTPUTFILE} | tee ${REPORT_FILE}
 # fi
 
-echo "running benchmarks and saving to "${REPORT_FILE}
+echo "running benchmarks and saving to ${REPORT_FILE}"
 ${COMMAND} | tee ${REPORT_FILE}
 
 
