@@ -1,10 +1,12 @@
 #!/bin/bash
 
+# sudo dnf install libcgroup-tools
+
 set -x
 set -e
 
-# export GITHUB_WORKSPACE=/home/fernando/boost/boost_unordered_benchmarks
-export GITHUB_WORKSPACE=/home/fernando/dev/boost/boost_unordered_benchmarks-fpelliccioni
+export GITHUB_WORKSPACE=/home/fernando/boost/boost_unordered_benchmarks
+# export GITHUB_WORKSPACE=/home/fernando/dev/boost/boost_unordered_benchmarks-fpelliccioni
 
 export ARCHITECTURE="-m64 -march=native"
 export VCPKGTRIPLET=x64-linux
@@ -16,16 +18,17 @@ export REPORTDIR=gcc-x64
 # install: g++-11 curl zip unzip tar pkg-config
 
 # export COMMAND="sudo cset shield --exec -- nice -n -20 sudo -u gha ./benchmark"
-export COMMAND="sudo cgexec -g memory,cpu:shield sudo -u gha ./benchmark"
+# export COMMAND="sudo cgexec -g memory,cpu:shield sudo -u gha ./benchmark"
+export COMMAND="./benchmark"
 
 export NUM_THREADS=128
 
-# Prepare Repo
-git clone https://github.com/fpelliccioni/boost_unordered_benchmarks.git
-cd boost_unordered_benchmarks
-git pull
-# git checkout parallel_hashmap_benchmark
-git checkout boost_concurrent_flat_map
+# # Prepare Repo
+# git clone https://github.com/fpelliccioni/boost_unordered_benchmarks.git
+# cd boost_unordered_benchmarks
+# git pull
+# # git checkout parallel_hashmap_benchmark
+# git checkout boost_concurrent_flat_map
 
 #  Install Boost
 cd $GITHUB_WORKSPACE
@@ -62,17 +65,8 @@ g++ --version
 g++ ${SOURCEFILE} ${ARCHITECTURE} ${COMPILEROPTIONS} -o ${OUTPUTFILE} -DNUM_THREADS=${NUM_THREADS} -I$GITHUB_WORKSPACE/boost_unordered-root/include -I$GITHUB_WORKSPACE/boost-root -I$GITHUB_WORKSPACE/vcpkg/installed/${VCPKGTRIPLET}/include -I$GITHUB_WORKSPACE/gtl-root/include -L$GITHUB_WORKSPACE/vcpkg/installed/${VCPKGTRIPLET}/lib -pthread -ltbb -ltbbmalloc
 
 # Set reportfile name
-# echo "REPORT_FILE=${REPORTDIR}/${SOURCEFILE}.csv" >> $GITHUB_ENV
 export REPORT_FILE="${REPORTDIR}/${SOURCEFILE}.csv"
 
-# Run benchmarks
-# if [ -n "${COMMAND}" ]; then
-#   echo "running benchmarks and saving to "${REPORT_FILE}
-#   ${COMMAND} | tee ${REPORT_FILE}
-# else
-#   echo "running benchmarks and saving to "${REPORT_FILE}
-#   ./${OUTPUTFILE} | tee ${REPORT_FILE}
-# fi
 echo "running benchmarks and saving to ${REPORT_FILE}"
 ${COMMAND} | tee ${REPORT_FILE}
 
