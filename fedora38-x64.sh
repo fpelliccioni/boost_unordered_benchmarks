@@ -21,7 +21,7 @@ export REPORTDIR=gcc-x64
 # export COMMAND="sudo cset shield --exec -- nice -n -20 sudo -u gha ./benchmark"
 export COMMAND="./benchmark"
 
-export NUM_THREADS=128
+export NUM_THREADS=32
 
 # - uses: actions/checkout@v3
 # git clone https://github.com/fpelliccioni/boost_unordered_benchmarks.git
