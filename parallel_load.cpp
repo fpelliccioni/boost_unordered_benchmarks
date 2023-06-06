@@ -20,7 +20,7 @@ double measure(F f)
   using namespace std::chrono;
 
   static const int              num_trials=10;
-  static const milliseconds     min_time_per_trial(200);
+  static const milliseconds     min_time_per_trial(10);
   std::array<double,num_trials> trials;
 
   for(int i=0;i<num_trials;++i){
@@ -55,6 +55,7 @@ void resume_timing()
 #include <boost/bind/bind.hpp>
 #include <boost/unordered/concurrent_flat_map.hpp>
 #include <iostream>
+#include <latch>
 #include <random>
 #include <thread>
 #include <vector>
@@ -151,43 +152,60 @@ struct parallel_load
 {
   using result_type=std::size_t;
 
-  result_type operator()(int N,double theta,int num_threads)const
+  BOOST_NOINLINE result_type operator()(int N,double theta,int num_threads)const
   {
-    pause_timing(); /* initializing zipf distributions is costly */
-
-    Map                           m;
-    std::vector<std::thread>      threads;
-    std::vector<int>              results(num_threads);
-    zipfian_int_distribution<int> zipf1{1,N,theta},
-                                  zipf2{N+1,2*N,theta};
-
-    resume_timing();
-
-    for(int i=0;i<num_threads;++i)threads.emplace_back([&,i,zipf1,zipf2]{
-      std::discrete_distribution<>  dist({10,45,45});
-      std::mt19937_64               gen(i);
-
-      updater  update{zipf1};
-      finder   successful_find{zipf1},
-               unsuccessful_find{zipf2};
-
-      int n=i==0?(N+num_threads-1)/num_threads:N/num_threads;
-
-      for(int j=0;j<n;++j){
-        switch(dist(gen)){
-          case 0:  update(m,gen); break;
-          case 1:  successful_find(m,gen); break;
-          case 2:
-          default: unsuccessful_find(m,gen); break;
-        }
-      }
-      results[i]=successful_find.res+unsuccessful_find.res;
-    });
     int res=0;
-    for(int i=0;i<num_threads;++i){
-      threads[i].join();
-      res+=results[i];
+    pause_timing(); 
+    {
+      Map                           m;
+      std::vector<std::thread>      threads;
+      std::vector<int>              results(num_threads);
+      zipfian_int_distribution<int> zipf1{1,N,theta},
+                                    zipf2{N+1,2*N,theta};
+      std::latch                    ready(num_threads),
+                                    start(1),
+                                    completed(num_threads),
+                                    finish(1);
+
+      for(int i=0;i<num_threads;++i)threads.emplace_back([&,i,zipf1,zipf2]{
+        std::discrete_distribution<>  dist({10,45,45});
+        std::mt19937_64               gen(std::size_t(282472+i*213731));
+
+        updater  update{zipf1};
+        finder   successful_find{zipf1},
+                 unsuccessful_find{zipf2};
+
+        int n=i==0?(N+num_threads-1)/num_threads:N/num_threads;
+        n*=10; /* so that sum(#updates(i)) = N */
+
+        ready.count_down();
+        start.wait();
+
+        for(int j=0;j<n;++j){
+          switch(dist(gen)){
+            case 0:  update(m,gen); break;
+            case 1:  successful_find(m,gen); break;
+            case 2:
+            default: unsuccessful_find(m,gen); break;
+          }
+        }
+        results[i]=successful_find.res+unsuccessful_find.res;
+        completed.count_down();
+        finish.wait();
+      });
+
+      ready.wait();
+      resume_timing();
+      start.count_down();
+      completed.wait();
+      pause_timing();
+      finish.count_down();
+      for(int i=0;i<num_threads;++i){
+        threads[i].join();
+        res+=results[i];
+      }
     }
+    resume_timing();
     return res;
   }
 };
@@ -196,7 +214,7 @@ template<
   template<typename> class Tester,
   typename Container1,typename Container2,typename Container3
 >
-void test(
+BOOST_NOINLINE void test(
   const char* title,int N,double theta,
   const char* name1,const char* name2,const char* name3)
 {
@@ -212,11 +230,11 @@ void test(
   for(int n=1;n<=num_threads;++n){
     std::cout<<n<<";";
     auto t=measure(boost::bind(Tester<Container1>(),N,theta,n));
-    std::cout<<N/t/1E6<<";";
+    std::cout<<10*N/t/1E6<<";";
     t=measure(boost::bind(Tester<Container2>(),N,theta,n));
-    std::cout<<N/t/1E6<<";";
+    std::cout<<10*N/t/1E6<<";";
     t=measure(boost::bind(Tester<Container3>(),N,theta,n));
-    std::cout<<N/t/1E6<<std::endl;
+    std::cout<<10*N/t/1E6<<std::endl;
   }
 }
 
