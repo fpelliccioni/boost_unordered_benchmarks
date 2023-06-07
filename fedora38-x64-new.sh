@@ -18,10 +18,12 @@ export REPORTDIR=gcc-x64
 # install: g++-11 curl zip unzip tar pkg-config
 
 # export COMMAND="sudo cset shield --exec -- nice -n -20 sudo -u gha ./benchmark"
-# export COMMAND="sudo cgexec -g memory,cpu:shield sudo -u gha ./benchmark"
-export COMMAND="./benchmark"
+export COMMAND="sudo cgexec -g memory,cpu:shield sudo -u gha ./benchmark"
+# export COMMAND="./benchmark"
 
-export NUM_THREADS=128
+# export NUM_THREADS=128
+export NUM_THREADS=64
+
 
 # # Prepare Repo
 # git clone https://github.com/fpelliccioni/boost_unordered_benchmarks.git
@@ -30,34 +32,34 @@ export NUM_THREADS=128
 # # git checkout parallel_hashmap_benchmark
 # git checkout boost_concurrent_flat_map
 
-#  Install Boost
-cd $GITHUB_WORKSPACE
-git clone https://github.com/boostorg/boost.git boost-root
-cd boost-root
-git checkout develop
-git submodule update --init
-./bootstrap.sh
-./b2 -d0 headers
+# #  Install Boost
+# cd $GITHUB_WORKSPACE
+# git clone https://github.com/boostorg/boost.git boost-root
+# cd boost-root
+# git checkout develop
+# git submodule update --init
+# ./bootstrap.sh
+# ./b2 -d0 headers
 
-# Install Boost.Unordered branch feature/cfoa
-cd $GITHUB_WORKSPACE
-git clone -b feature/cfoa https://github.com/boostorg/unordered.git boost_unordered-root
+# # Install Boost.Unordered branch feature/cfoa
+# cd $GITHUB_WORKSPACE
+# git clone -b feature/cfoa https://github.com/boostorg/unordered.git boost_unordered-root
 
-# Install oneTBB
-cd $GITHUB_WORKSPACE
-mkdir -p .vcpkg
-touch .vcpkg/vcpkg.path.txt
-cd $GITHUB_WORKSPACE
-git clone https://github.com/Microsoft/vcpkg.git
-cp x86-linux.cmake vcpkg/triplets
-cd vcpkg
-./bootstrap-vcpkg.sh -disableMetrics
-./vcpkg integrate install
-./vcpkg install tbb:${VCPKGTRIPLET}
+# # Install oneTBB
+# cd $GITHUB_WORKSPACE
+# mkdir -p .vcpkg
+# touch .vcpkg/vcpkg.path.txt
+# cd $GITHUB_WORKSPACE
+# git clone https://github.com/Microsoft/vcpkg.git
+# cp x86-linux.cmake vcpkg/triplets
+# cd vcpkg
+# ./bootstrap-vcpkg.sh -disableMetrics
+# ./vcpkg integrate install
+# ./vcpkg install tbb:${VCPKGTRIPLET}
 
-# Install gtl
-cd $GITHUB_WORKSPACE
-git clone https://github.com/greg7mdp/gtl.git gtl-root
+# # Install gtl
+# cd $GITHUB_WORKSPACE
+# git clone https://github.com/greg7mdp/gtl.git gtl-root
 
 #  Compile
 cd $GITHUB_WORKSPACE
