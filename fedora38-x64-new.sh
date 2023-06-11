@@ -41,9 +41,10 @@ export NUM_THREADS=64
 # ./bootstrap.sh
 # ./b2 -d0 headers
 
-# # Install Boost.Unordered branch feature/cfoa
-# cd $GITHUB_WORKSPACE
-# git clone -b feature/cfoa https://github.com/boostorg/unordered.git boost_unordered-root
+# Install Boost.Unordered branch feature/cfoa
+cd $GITHUB_WORKSPACE
+rm -rf boost_unordered-root
+git clone -b feature/cfoa https://github.com/boostorg/unordered.git boost_unordered-root
 
 # # Install oneTBB
 # cd $GITHUB_WORKSPACE
