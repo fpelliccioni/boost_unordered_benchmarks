@@ -18,12 +18,12 @@ export REPORTDIR=gcc-x64
 # install: g++-11 curl zip unzip tar pkg-config
 
 # export COMMAND="sudo cset shield --exec -- nice -n -20 sudo -u gha ./benchmark"
-export COMMAND="sudo cgexec -g memory,cpu:shield sudo -u gha ./benchmark"
+# export COMMAND="sudo cgexec -g memory,cpu:shield sudo -u gha ./benchmark"
 # export COMMAND="./benchmark"
+export COMMAND="sudo cgexec -g memory,cpu:shield ./benchmark"
 
 # export NUM_THREADS=128
 export NUM_THREADS=64
-
 
 # # Prepare Repo
 # git clone https://github.com/fpelliccioni/boost_unordered_benchmarks.git
