@@ -41,6 +41,15 @@ export NUM_THREADS=64
 # ./bootstrap.sh
 # ./b2 -d0 headers
 
+#  Update Boost
+cd $GITHUB_WORKSPACE
+cd boost-root
+git checkout develop
+git pull
+git submodule update --init
+# ./bootstrap.sh
+# ./b2 -d0 headers
+
 # Install Boost.Unordered branch feature/cfoa
 cd $GITHUB_WORKSPACE
 rm -rf boost_unordered-root
