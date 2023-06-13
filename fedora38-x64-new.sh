@@ -53,7 +53,8 @@ git submodule update --init
 # Install Boost.Unordered branch feature/cfoa
 cd $GITHUB_WORKSPACE
 rm -rf boost_unordered-root
-git clone -b feature/cfoa https://github.com/boostorg/unordered.git boost_unordered-root
+# git clone -b feature/cfoa https://github.com/boostorg/unordered.git boost_unordered-root
+git clone -b feature/cfoa-mutex https://github.com/boostorg/unordered.git boost_unordered-root
 
 # # Install oneTBB
 # cd $GITHUB_WORKSPACE

@@ -1,11 +1,12 @@
 #!/bin/bash
 
-python2 insert_data.py gcc-x64/parallel_load.cpp.csv "Parallel load (N=500000, theta=0.01)"  "gcc-x64/Parallel workload.xlsx" "500k, 0.01"
-python2 insert_data.py gcc-x64/parallel_load.cpp.csv "Parallel load (N=500000, theta=0.5)"   "gcc-x64/Parallel workload.xlsx" "500k, 0.5"
-python2 insert_data.py gcc-x64/parallel_load.cpp.csv "Parallel load (N=500000, theta=0.99)"  "gcc-x64/Parallel workload.xlsx" "500k, 0.99"
-python2 insert_data.py gcc-x64/parallel_load.cpp.csv "Parallel load (N=5000000, theta=0.01)" "gcc-x64/Parallel workload.xlsx" "5M, 0.01"
-python2 insert_data.py gcc-x64/parallel_load.cpp.csv "Parallel load (N=5000000, theta=0.5)"  "gcc-x64/Parallel workload.xlsx" "5M, 0.5"
+# python2 insert_data.py gcc-x64/parallel_load.cpp.csv "Parallel load (N=500000, theta=0.01)"  "gcc-x64/Parallel workload.xlsx" "500k, 0.01"
+# python2 insert_data.py gcc-x64/parallel_load.cpp.csv "Parallel load (N=500000, theta=0.5)"   "gcc-x64/Parallel workload.xlsx" "500k, 0.5"
+# python2 insert_data.py gcc-x64/parallel_load.cpp.csv "Parallel load (N=500000, theta=0.99)"  "gcc-x64/Parallel workload.xlsx" "500k, 0.99"
+# python2 insert_data.py gcc-x64/parallel_load.cpp.csv "Parallel load (N=5000000, theta=0.01)" "gcc-x64/Parallel workload.xlsx" "5M, 0.01"
+# python2 insert_data.py gcc-x64/parallel_load.cpp.csv "Parallel load (N=5000000, theta=0.5)"  "gcc-x64/Parallel workload.xlsx" "5M, 0.5"
 python2 insert_data.py gcc-x64/parallel_load.cpp.csv "Parallel load (N=5000000, theta=0.99)" "gcc-x64/Parallel workload.xlsx" "5M, 0.99"
+python2 insert_data.py gcc-x64/parallel_load.cpp.csv "Parallel load (N=50000000, theta=0.99)" "gcc-x64/Parallel workload.xlsx" "50M, 0.99"
 
 # python2 insert_data.py clang-x64/parallel_load.cpp.csv "Parallel load (N=500000, theta=0.01)"  "clang-x64/Parallel workload.xlsx" "500k, 0.01"
 # python2 insert_data.py clang-x64/parallel_load.cpp.csv "Parallel load (N=500000, theta=0.5)"   "clang-x64/Parallel workload.xlsx" "500k, 0.5"
