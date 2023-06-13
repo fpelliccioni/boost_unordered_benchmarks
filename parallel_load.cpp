@@ -155,7 +155,7 @@ struct parallel_load
   BOOST_NOINLINE result_type operator()(int N,double theta,int num_threads)const
   {
     int res=0;
-    pause_timing(); 
+    pause_timing();
     {
       Map                           m;
       std::vector<std::thread>      threads;
@@ -242,8 +242,10 @@ int main()
 {
   std::cout<<"#logical cores: "<<std::thread::hardware_concurrency()<<std::endl;
 
-  for(auto N:{500'000,5'000'000}){
-    for(auto theta:{0.01,0.5,0.99}){
+  // for(auto N:{500'000,5'000'000}){
+  //   for(auto theta:{0.01,0.5,0.99}){
+  for(auto N:{5'000'000,50'000'000}){
+    for(auto theta:{0.99}){
       test<
         parallel_load,
         tbb_map,
