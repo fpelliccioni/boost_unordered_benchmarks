@@ -19,11 +19,12 @@ export REPORTDIR=gcc-x64
 
 # export COMMAND="sudo cset shield --exec -- nice -n -20 sudo -u gha ./benchmark"
 # export COMMAND="sudo cgexec -g memory,cpu:shield sudo -u gha ./benchmark"
-# export COMMAND="./benchmark"
-export COMMAND="sudo cgexec -g memory,cpu:shield ./benchmark"
 
-# export NUM_THREADS=128
-export NUM_THREADS=64
+export COMMAND="./benchmark"
+# export COMMAND="sudo cgexec -g memory,cpu:shield ./benchmark"
+
+export NUM_THREADS=128
+# export NUM_THREADS=64
 
 # # Prepare Repo
 # git clone https://github.com/fpelliccioni/boost_unordered_benchmarks.git
@@ -42,19 +43,24 @@ export NUM_THREADS=64
 # ./b2 -d0 headers
 
 #  Update Boost
-cd $GITHUB_WORKSPACE
-cd boost-root
-git checkout develop
-git pull
-git submodule update --init
+# cd $GITHUB_WORKSPACE
+# cd boost-root
+# git checkout develop
+# git pull
+# git submodule update --init
 # ./bootstrap.sh
 # ./b2 -d0 headers
 
-# Install Boost.Unordered branch feature/cfoa
-cd $GITHUB_WORKSPACE
+# # Install Boost.Unordered branch feature/cfoa
+# cd $GITHUB_WORKSPACE
+# rm -rf boost_unordered-root
+# # git clone -b feature/cfoa https://github.com/boostorg/unordered.git boost_unordered-root
+# # git clone -b feature/cfoa-mutex https://github.com/boostorg/unordered.git boost_unordered-root
+# git clone -b feature/backoff https://github.com/boostorg/unordered.git boost_unordered-root
 rm -rf boost_unordered-root
-# git clone -b feature/cfoa https://github.com/boostorg/unordered.git boost_unordered-root
-git clone -b feature/cfoa-mutex https://github.com/boostorg/unordered.git boost_unordered-root
+git clone -b develop https://github.com/boostorg/unordered.git boost_unordered-root
+
+
 
 # # Install oneTBB
 # cd $GITHUB_WORKSPACE
