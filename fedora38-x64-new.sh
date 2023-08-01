@@ -10,7 +10,9 @@ export GITHUB_WORKSPACE=/home/fernando/boost/boost_unordered_benchmarks
 
 export ARCHITECTURE="-m64 -march=native"
 export VCPKGTRIPLET=x64-linux
-export SOURCEFILE=parallel_load.cpp
+# export SOURCEFILE=parallel_load.cpp
+export SOURCEFILE=parallel_hashmap_benchmark/main2.cpp
+
 # export COMPILEROPTIONS="-std=c++2a -O3 -DNDEBUG -DCFOA_NO_EMBEDDED_GROUP_ACCESS"
 export COMPILEROPTIONS="-std=c++2a -O3 -DNDEBUG"
 export OUTPUTFILE=benchmark
@@ -32,6 +34,14 @@ export NUM_THREADS=128
 # git pull
 # # git checkout parallel_hashmap_benchmark
 # git checkout boost_concurrent_flat_map
+
+# # enwik9 test
+# # requires:
+# # wget https://mattmahoney.net/dc/enwik9.zip
+# # unzip enwik9.zip 
+git clone https://github.com/pdimov/parallel_hashmap_benchmark.git
+
+
 
 # #  Install Boost
 # cd $GITHUB_WORKSPACE
@@ -57,8 +67,8 @@ export NUM_THREADS=128
 # # git clone -b feature/cfoa https://github.com/boostorg/unordered.git boost_unordered-root
 # # git clone -b feature/cfoa-mutex https://github.com/boostorg/unordered.git boost_unordered-root
 # git clone -b feature/backoff https://github.com/boostorg/unordered.git boost_unordered-root
-rm -rf boost_unordered-root
-git clone -b develop https://github.com/boostorg/unordered.git boost_unordered-root
+# rm -rf boost_unordered-root
+# git clone -b develop https://github.com/boostorg/unordered.git boost_unordered-root
 
 
 
